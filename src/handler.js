@@ -89,10 +89,30 @@ const getBooksHandler = (request, h) => {
   return response;
 };
 
-// const getBookDetailByIdHandler = (request, h) => {
-//   const { bookId } = request.params;
-//   const bookDetail = books.filter((book) => book.id === bookId);
-//   console.log(bookDetail);
-// };
+const getBookDetailByIdHandler = (request, h) => {
+  const { bookId } = request.params;
+  const bookDetail = books.filter((book) => book.id === bookId);
+  // console.log(bookDetail);
 
-module.exports = { addBookHandler, getBooksHandler };
+  if (!bookDetail.length) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Buku tidak ditemukan',
+    });
+
+    response.code(404);
+    return response;
+  }
+
+  const response = h.response({
+    status: 'success',
+    data: {
+      book: bookDetail[0],
+    },
+  });
+
+  response.code(200);
+  return response;
+};
+
+module.exports = { addBookHandler, getBooksHandler, getBookDetailByIdHandler };
