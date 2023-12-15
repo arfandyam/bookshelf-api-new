@@ -148,17 +148,6 @@ const putBookByIdHandler = (request, h) => {
     return response;
   }
 
-  const bookDetail = books.filter((book) => book.id === bookId);
-  if (!bookDetail.length) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Buku tidak ditemukan',
-    });
-
-    response.code(404);
-    return response;
-  }
-
   const index = books.findIndex((book) => book.id === bookId);
   let finished = false;
   if (readPage === pageCount) {
@@ -180,14 +169,21 @@ const putBookByIdHandler = (request, h) => {
       reading,
       updatedAt,
     };
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil diperbarui',
+    });
+
+    response.code(200);
+    return response;
   }
 
   const response = h.response({
-    status: 'success',
-    message: 'Buku berhasil diperbarui',
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
   });
 
-  response.code(200);
+  response.code(404);
   return response;
 };
 
@@ -197,7 +193,7 @@ const deleteBookHandler = (request, h) => {
   const index = books.findIndex((book) => book.id === bookId);
 
   if (index !== -1) {
-    books.splice(index);
+    books.splice(index, 1);
     const response = h.response({
       status: 'success',
       message: 'Buku berhasil dihapus',
