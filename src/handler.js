@@ -73,20 +73,10 @@ const addBookHandler = (request, h) => {
 
 const getBooksHandler = (request, h) => {
   const { name, reading, finished } = request.query;
-  // const { name } = request.params;
   let allbooks = books;
-  // console.log(books);
-  console.log('name:', name);
-  console.log('reading:', reading);
-  console.log('finished:', finished);
 
   if (name) {
     allbooks = allbooks.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
-    // allbooks = allbooks.filter((book) => (
-    //   console.log(book.name)
-    //   book.name.includes(name)
-    // ));
-    // // allbooks = allbooks.filter((book) => book.name === name);
   }
 
   if (reading) {
@@ -117,7 +107,6 @@ const getBooksHandler = (request, h) => {
 const getBookDetailByIdHandler = (request, h) => {
   const { bookId } = request.params;
   const bookDetail = books.filter((book) => book.id === bookId);
-  // console.log(bookDetail);
 
   if (!bookDetail.length) {
     const response = h.response({
@@ -205,7 +194,7 @@ const putBookByIdHandler = (request, h) => {
 
   const response = h.response({
     status: 'fail',
-    message: 'Buku tidak ditemukan',
+    message: 'Gagal memperbarui buku. Id tidak ditemukan',
   });
 
   response.code(404);
@@ -230,7 +219,7 @@ const deleteBookHandler = (request, h) => {
 
   const response = h.response({
     status: 'fail',
-    message: 'Buku gagal dihapus. id tidak ditemukan',
+    message: 'Buku gagal dihapus. Id tidak ditemukan',
   });
 
   response.code(404);
