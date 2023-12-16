@@ -63,7 +63,7 @@ const addBookHandler = (request, h) => {
     status: 'success',
     message: 'Buku berhasil ditambahkan',
     data: {
-      id,
+      bookId: id,
     },
   });
 
@@ -72,7 +72,32 @@ const addBookHandler = (request, h) => {
 };
 
 const getBooksHandler = (request, h) => {
-  const allbooks = books.map((book) => ({
+  const { name, reading, finished } = request.query;
+  // const { name } = request.params;
+  let allbooks = books;
+  // console.log(books);
+  console.log('name:', name);
+  console.log('reading:', reading);
+  console.log('finished:', finished);
+
+  if (name) {
+    allbooks = allbooks.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
+    // allbooks = allbooks.filter((book) => (
+    //   console.log(book.name)
+    //   book.name.includes(name)
+    // ));
+    // // allbooks = allbooks.filter((book) => book.name === name);
+  }
+
+  if (reading) {
+    allbooks = allbooks.filter((book) => book.reading === Boolean(Number(reading)));
+  }
+
+  if (finished) {
+    allbooks = allbooks.filter((book) => book.finished === Boolean(Number(finished)));
+  }
+
+  allbooks = allbooks.map((book) => ({
     id: book.id,
     name: book.name,
     publisher: book.publisher,
